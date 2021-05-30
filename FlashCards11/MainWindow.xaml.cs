@@ -27,17 +27,30 @@ namespace FlashCards11
         {
             InitializeComponent();
             LoadGrid();
+            InitiateSearchCB();
             CollectionView = CollectionViewSource.GetDefaultView(Context.StudyAppItem.Local);
 
             nextBtn.Content = "Start";
             confirmLblQuest.Content = "";
             subjectCB.SelectedIndex = 0;
+            cbSearch.SelectedIndex = 0;
 
             yesRbtn.Visibility = Visibility.Hidden;
             noRbtn.Visibility = Visibility.Hidden;
             showBtn.IsEnabled = false;
             yesRbtn.IsEnabled = false;
             noRbtn.IsEnabled = false;
+        }
+
+        private void InitiateSearchCB()
+        {
+            List<string> columnNames = new List<string>();
+            //columnNames.Add("Fach");
+            //columnNames.Add("Name");
+            //columnNames.Add("Inhalt");
+            cbSearch.Items.Add("Fach");
+            cbSearch.Items.Add("Name");
+            cbSearch.Items.Add("Inhalt");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -288,10 +301,10 @@ namespace FlashCards11
             
         //}
 
-        private void TbFilter_TextChanged_2(object sender, TextChangedEventArgs e)
-        {
-            string filterStr = tbFilter.Text;
-            CollectionView.Filter = (x => ((StudyAppItem)x).item_content.Contains(filterStr));
-        }
+        //private void TbFilter_TextChanged_2(object sender, TextChangedEventArgs e)
+        //{
+        //    string filterStr = tbFilter.Text;
+        //    CollectionView.Filter = (x => ((StudyAppItem)x).item_content.Contains(filterStr));
+        //}
     }
 }

@@ -175,13 +175,6 @@
                             </Label.Effect>
                         </Label>
                         <ComboBox x:Name="subjectCB" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8" BorderBrush="{x:Null}" >
-                            <ComboBox.Background>
-                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
-                                    <GradientStop Color="White" Offset="0.056"/>
-                                </LinearGradientBrush>
-                            </ComboBox.Background>
                             <ComboBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
                             </ComboBox.Effect>
@@ -344,11 +337,16 @@
                                 <DropShadowEffect ShadowDepth="1" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </Label.Effect>
                         </Label>
-                        <TextBox x:Name="tbFilter" TextChanged="TbFilter_TextChanged_2" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1">
+                        <ComboBox x:Name="cbSearch" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1" BorderBrush="{x:Null}">
+                            <ComboBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
+                            </ComboBox.Effect>
+                        </ComboBox>
+                        <!--<TextBox x:Name="tbFilter" TextChanged="TbFilter_TextChanged_2" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1">
                             <TextBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </TextBox.Effect>
-                        </TextBox>
+                        </TextBox>-->
                         <!--<TextBlock TextWrapping="Wrap">
                         --><!--<Run Text="Suchbegiff"/>-->
                         <!--<Run Text="{Binding Count,Mode=OneWay}"/>--><!--
