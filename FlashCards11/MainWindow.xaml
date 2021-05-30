@@ -1,0 +1,370 @@
+﻿<Window x:Class="FlashCards11.MainWindow"
+
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FlashCards11"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="500"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+
+    <!--rounded button style template -->
+    <Window.Resources>
+        <Style x:Key="RoundCorner" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="roundBtn">
+                            <!--Button border-->
+                            <Border x:Name="border" CornerRadius="8" BorderBrush="White" BorderThickness="2">
+                                <Border.Background>
+                                    <!--direction and size of gradient-->
+                                    <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                        <RadialGradientBrush.RelativeTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform CenterX="0.5" CenterY="0.5" 
+                                                        ScaleX="1.5" ScaleY="1.5"/>
+                                                <TranslateTransform X="0.02" Y="0.3"/>
+                                            </TransformGroup>
+                                        </RadialGradientBrush.RelativeTransform>
+                                        <GradientStop Offset="1" Color="#000444FF"/>
+                                        <!--'hollow' version Color="#0000AAFF"-->
+                                        <GradientStop Offset="0.3" Color="#4488FF"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold">
+                                </ContentPresenter>
+                            </Border>
+                        </Grid>
+
+                        <!--button changes after being clicked-->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" 
+                                                        ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Offset="1" Color="#F00044FF"/>
+
+                                            <GradientStop Offset="0.3" Color="#88CCFF"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <!--color change for mouseOver -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#4488FF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="roundBtn" Value="0.25"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ScrollBar design "invisible"-->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle"   Value="true" />
+        </Style>
+    </Window.Resources>
+
+
+    <!--outer window border for roundness-->
+    <Border CornerRadius="35" BorderThickness="35">
+        <Border.BorderBrush>
+            <!--sky-like color gradient-->
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFF" Offset="0.0" />
+                <GradientStop Color="AliceBlue" Offset="0.5" />
+                <GradientStop Color="#0055FF" Offset="1.1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <!--gridlayout which holds tabControl-->
+        <Grid x:Name="LayoutRoot" >
+            <TabControl x:Name="tControl" Margin="10" VerticalAlignment="Stretch">
+                <!--tabControl style template-->
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <!--ControlTemplate modifies (Tab)Control visuals, not functionality-->
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border x:Name="Border" BorderThickness="0,2,2,0" BorderBrush="Wheat" CornerRadius="20,20,0,0" Margin="2,0">
+                                        <!--controlTemplate needs ctrlPresenter-->
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Border>
+
+                                    <!--tab color change when selected-->
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <!--old value LightBlue-->
+                                            <Setter TargetName="Border" Property="Background" Value="#4488FF" />
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="WhiteSmoke" />
+                                            <Setter Property="Foreground" Value="#4488FF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+
+                <!--Margin -1: hide horizontal line between tab and panel-->
+                <TabItem Header="Neue Flashcard" Opacity="1" Width="135" Margin="0,0,0,-1" >
+                    <!--add round corners to grid/ add one highlighted corner-->
+                    <!--<Border BorderBrush="#4488FF" BorderThickness="2" CornerRadius="00,30,00,00">-->
+                    <Grid ShowGridLines="False" >
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FFF" Offset="0.0" />
+                                <GradientStop Color="AliceBlue" Offset="0.5" />
+                                <GradientStop Color="#0055FF" Offset="1.1" />
+                            </LinearGradientBrush>
+                        </Grid.Background>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+
+                        <Label Content="Fach" FontSize="16" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Label.Effect>
+                        </Label>
+                        <ComboBox x:Name="subjectCB" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8" BorderBrush="{x:Null}" >
+                            <ComboBox.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                    <GradientStop Color="White" Offset="0.056"/>
+                                </LinearGradientBrush>
+                            </ComboBox.Background>
+                            <ComboBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
+                            </ComboBox.Effect>
+                        </ComboBox>
+                        <!--<TextBox x:Name="subjectTB" Foreground="#4499FF" Grid.Column="1" Margin="8">
+                            <TextBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </TextBox.Effect>
+                        </TextBox>-->
+
+                        <Label Content="Stichwort" FontSize="16" Foreground="#4488FF" Margin="2" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Label.Effect>
+                        </Label>
+                        <TextBox x:Name="queryKeywordTB" Foreground="#4499FF"  Margin="8" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+                            <TextBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="black" Opacity="0.5" BlurRadius="5"/>
+                            </TextBox.Effect>
+                        </TextBox>
+                        <Label  Content="Inhalt" FontSize="16" Foreground="#4488FF" Margin="2" Grid.Row="2" Grid.Column="0"  VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Label.Effect>
+                        </Label>
+
+                        <TextBox x:Name="contentTB" TextWrapping="WrapWithOverflow" Foreground="#4499FF" Margin="8" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" >
+                            <TextBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </TextBox.Effect>
+                        </TextBox>
+                        <Button x:Name="saveBtn" Content="Speichern" Click="saveBtn_Click" Style="{DynamicResource RoundCorner}" Width="80" Height="35" Foreground="White" Grid.Row="4" Grid.Column="2" >
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="deleteBtn" Content="Löschen" Click="deleteBtn_Click" Style="{DynamicResource RoundCorner}" Width="80" Height="35"  Foreground="White" Grid.Row="4" Grid.Column="3" >
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Button.Effect>
+                        </Button>
+                        <Label x:Name="confirmLbl" Foreground="#4488FF" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1"></Label>
+                    </Grid>
+                    <!--</Border>-->
+                </TabItem>
+
+                <TabItem x:Name="queryTab" Header="Abfrage" Opacity="1" Width="135" Margin="0,0,0,-1">
+                    <Grid ShowGridLines="False" >
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FFF" Offset="0.0" />
+                                <GradientStop Color="AliceBlue" Offset="0.5" />
+                                <GradientStop Color="#0055FF" Offset="1.1" />
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Label Content="Fach" FontSize="16" Foreground="#4499FF" Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        <Label x:Name="querySubjectLbl" FontSize="16" Foreground="#4499FF" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" >
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+
+
+                        <Label Content="Korrekt" FontSize="16" Foreground="#4499FF" Margin="2" Grid.Row="0" Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        <Label x:Name="pointsPercLbl" Content="0" FontSize="16" Foreground="#4499FF" Margin="2" Grid.Row="0" Grid.Column="3"  HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        <Label Content="Stichwort" FontSize="16" Foreground="#4499FF" Margin="2" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        <Label x:Name="queryKeywordLbl"  FontSize="16" Foreground="#4499FF" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="2">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+
+                        <Label Content="Inhalt" FontSize="16" Foreground="#4499FF"  Grid.Row="2" Grid.Column="0">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+                            <TextBlock x:Name="queryContentTB" Margin="5" TextWrapping="Wrap" FontSize="16" Foreground="#4499FF">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="3"/>
+                                </TextBlock.Effect>
+                                <TextBlock.VerticalAlignment>Top</TextBlock.VerticalAlignment>
+                            </TextBlock>
+                        </ScrollViewer>
+                        <!--Style="{DynamicResource RoundCorner}" vs. Template="{StaticResource roundbutton}"-> functions vs. visuals -->
+                        <Button x:Name="stopBtn" Click="stopBtn_Click" Content="Stop" Style="{DynamicResource RoundCorner}" Grid.Row="4" Grid.Column="0" >
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="nextBtn" Content="Start" Click="nextBtn_Click" Style="{DynamicResource RoundCorner}" Grid.Row="4" Grid.Column="2" >
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="showBtn" Content="Lösung" Click="solutionBtn_Click" Style="{DynamicResource RoundCorner}" Grid.Row="4" Grid.Column="4" >
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Button.Effect>
+                        </Button>
+                        <Label x:Name="confirmLblQuest" Content="Richtig gelöst?" Foreground="#4488FF" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1"></Label>
+                        <RadioButton x:Name="yesRbtn" Content="j" Click="yesRbtn_Click" Foreground="#4488FF" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="45,10,00,10" Grid.Row="3" Grid.Column="1"></RadioButton>
+                        <RadioButton x:Name="noRbtn" Content="n" Click="noRbtn_Click" Foreground="#4488FF" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20,10,50,10" Grid.Row="3" Grid.Column="1"></RadioButton>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Suche" Opacity="1" Width="135" Margin="0,0,0,-1" >
+                    <!--add round corners to grid/ add one highlighted corner-->
+                    <!--<Border BorderBrush="#4488FF" BorderThickness="2" CornerRadius="00,30,00,00">-->
+                    <Grid x:Name="ParentGrid" ShowGridLines="False" >
+                        <!--<Grid.Background>-->
+                        <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FFF" Offset="0.0" />
+                                <GradientStop Color="AliceBlue" Offset="0.5" />
+                                <GradientStop Color="#0055FF" Offset="1.1" />
+                            </LinearGradientBrush>-->
+                        <!--</Grid.Background>-->
+
+
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Suche" FontSize="12" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="1" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </Label.Effect>
+                        </Label>
+                        <TextBox x:Name="tbFilter" TextChanged="TbFilter_TextChanged_2" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1">
+                            <TextBox.Effect>
+                                <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
+                            </TextBox.Effect>
+                        </TextBox>
+                        <!--<TextBlock TextWrapping="Wrap">
+                        --><!--<Run Text="Suchbegiff"/>-->
+                        <!--<Run Text="{Binding Count,Mode=OneWay}"/>--><!--
+                        </TextBlock>-->
+                        <DataGrid x:Name="dgSearch" FontSize="12" Foreground="#4488FF" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding }" AutoGenerateColumns="False" 
+                                  IsSynchronizedWithCurrentItem="True" >
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Name" Binding="{Binding item_name}"  />
+                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Fach"  Binding="{Binding item_subject}" />
+                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Inhalt"  Binding="{Binding item_content}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
+</Window>
