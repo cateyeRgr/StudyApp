@@ -19,21 +19,26 @@ namespace FlashCards11
         int questionsAskedCount;
         double correctAnswersCount;
         string contentLbl;
+        //private bool handle = true;
 
-        private ICollectionView CollectionView;
-        private StudyAppEntities Context = new StudyAppEntities();
+        ICollectionView CollectionView;
+        StudyAppEntities Context = new StudyAppEntities();
 
         public MainWindow()
         {
             InitializeComponent();
             LoadGrid();
-            InitiateSearchCB();
-            CollectionView = CollectionViewSource.GetDefaultView(Context.StudyAppItem.Local);
+            //InitiateSearchCB();
+          
+            Context.StudyAppItem.Load();
+            ICollectionView CollectionView = CollectionViewSource.GetDefaultView(Context.StudyAppItem.Local);
+            ParentGrid.DataContext = CollectionView;
+            
 
             nextBtn.Content = "Start";
             confirmLblQuest.Content = "";
             subjectCB.SelectedIndex = 0;
-            cbSearch.SelectedIndex = 0;
+            //cbSearch.SelectedIndex = 0;
 
             yesRbtn.Visibility = Visibility.Hidden;
             noRbtn.Visibility = Visibility.Hidden;
@@ -48,12 +53,13 @@ namespace FlashCards11
             //columnNames.Add("Fach");
             //columnNames.Add("Name");
             //columnNames.Add("Inhalt");
-            cbSearch.Items.Add("Fach");
-            cbSearch.Items.Add("Name");
-            cbSearch.Items.Add("Inhalt");
+            //cbSearch.Items.Add("Fach");
+            //cbSearch.Items.Add("Stichwort");
+            //cbSearch.Items.Add("Inhalt");
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+        private void DisplaySubject()
         {
             Context.StudyAppItem.Load();
             CollectionView = CollectionViewSource.GetDefaultView(Context.StudyAppItem.Local);
@@ -64,7 +70,7 @@ namespace FlashCards11
             {
 
                 var queryS = from s in db.StudyAppItem
-                             //every item occurs only once
+                                 //every item occurs only once
                              group s by s.item_subject into newGroup
                              orderby newGroup.Key ascending
                              select newGroup;
@@ -79,8 +85,15 @@ namespace FlashCards11
 
                     subjectCB.Items.Add(itmS);
                 }
-                subjectCB.Items.Add("Neues Fach");
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+            DisplaySubject();
+            subjectCB.Items.Add("Neues Fach");
+            
         }
 
         private async void saveBtn_Click(object sender, RoutedEventArgs e)
@@ -294,17 +307,45 @@ namespace FlashCards11
             dgSearch.ItemsSource = data.ToList();
         }
 
-        //private void TbFilter_TextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //private void TbFilter_TextChanged(object sender, TextChangedEventArgs e)
         //{
         //    string filterStr = tbFilter.Text;
         //    CollectionView.Filter = (x => ((StudyAppItem)x).item_content.Contains(filterStr));
-            
         //}
 
-        //private void TbFilter_TextChanged_2(object sender, TextChangedEventArgs e)
+
+
+        //private void CbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
-        //    string filterStr = tbFilter.Text;
-        //    CollectionView.Filter = (x => ((StudyAppItem)x).item_content.Contains(filterStr));
+        //    if (handle) Handle();
+        //    handle = true;
         //}
+
+        //private void CbSearch_DropDownClosed(object sender, EventArgs e)
+        //{
+        //    ComboBox cmb = sender as ComboBox;
+        //    handle = !cmb.IsDropDownOpen;
+        //    Handle();
+        //}
+
+        //private void Handle()
+        //{
+        //    switch (cbSearch.SelectedItem.ToString())
+        //    {
+        //        case "Fach":
+        //            string filterStr = cbSearch.Text;
+        //            Binding binding1 = new Binding("item_subject");
+
+        //            break;
+        //        case "Stichwort":
+        //            //Handle for the second combobox
+        //            break;
+        //        case "Inhalt":
+        //            //Handle for the third combobox
+        //            break;
+        //    }
+        //}
+
+
     }
 }

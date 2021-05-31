@@ -321,28 +321,26 @@
                             </LinearGradientBrush>-->
                         <!--</Grid.Background>-->
 
-
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Label Content="Suche" FontSize="12" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                        <Label Content="Fach" FontSize="12" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
                             <Label.Effect>
                                 <DropShadowEffect ShadowDepth="1" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </Label.Effect>
                         </Label>
-                        <ComboBox x:Name="cbSearch" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1" BorderBrush="{x:Null}">
+                        <!--<ComboBox x:Name="cbSearch" SelectionChanged="CbSearch_SelectionChanged" DropDownClosed="CbSearch_DropDownClosed" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1" BorderBrush="{x:Null}">
                             <ComboBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
                             </ComboBox.Effect>
-                        </ComboBox>
-                        <!--<TextBox x:Name="tbFilter" TextChanged="TbFilter_TextChanged_2" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1">
+                        </ComboBox>-->
+                        <!--<TextBox x:Name="tbFilter" TextChanged="TbFilter_TextChanged" FontSize="12" Foreground="#4488FF" Margin="2" Grid.Row="0" Grid.Column="1">
                             <TextBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </TextBox.Effect>
@@ -351,12 +349,23 @@
                         --><!--<Run Text="Suchbegiff"/>-->
                         <!--<Run Text="{Binding Count,Mode=OneWay}"/>--><!--
                         </TextBlock>-->
-                        <DataGrid x:Name="dgSearch" FontSize="12" Foreground="#4488FF" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding }" AutoGenerateColumns="False" 
+                        <ListView Margin="5" Grid.Row="0" Grid.Column="1"  x:Name="label" ItemsSource="{Binding }" IsSynchronizedWithCurrentItem="True" Height="150" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding item_subject}"/>
+                                        <!--<TextBlock Text=". Station: " />
+                                        <TextBlock Text="{Binding Station}" />-->
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <DataGrid x:Name="dgSearch" FontSize="12" Foreground="#4488FF" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding}" AutoGenerateColumns="False" 
                                   IsSynchronizedWithCurrentItem="True" >
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Name" Binding="{Binding item_name}"  />
-                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Fach"  Binding="{Binding item_subject}" />
+                                <DataGridTextColumn MinWidth="100" Width="Auto" Header="Stichwort" Binding="{Binding item_name}"  />
+                                <!--<DataGridTextColumn MinWidth="100" Width="Auto" Header="Fach"  Binding="{Binding item_subject}" />-->
                                 <DataGridTextColumn MinWidth="100" Width="Auto" Header="Inhalt"  Binding="{Binding item_content}" />
                             </DataGrid.Columns>
                         </DataGrid>
