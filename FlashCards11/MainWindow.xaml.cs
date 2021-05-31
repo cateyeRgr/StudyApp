@@ -8,6 +8,8 @@ using System.Windows.Data;
 using System.Linq;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace FlashCards11
 {
@@ -23,6 +25,7 @@ namespace FlashCards11
 
         ICollectionView CollectionView;
         StudyAppEntities Context = new StudyAppEntities();
+
 
         public MainWindow()
         {
@@ -344,8 +347,8 @@ namespace FlashCards11
         //            //Handle for the third combobox
         //            break;
         //    }
-        //}
-
-
-    }
+                //}
+    
+        
+     }
 }
