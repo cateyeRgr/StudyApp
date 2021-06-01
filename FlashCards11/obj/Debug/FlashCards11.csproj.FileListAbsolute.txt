@@ -20,3 +20,10 @@ C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\obj\Debug\FlashCards11.csproj
 C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\obj\Debug\FlashCards11.csproj.CopyComplete
 C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\obj\Debug\FlashCards11.exe
 C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\obj\Debug\FlashCards11.pdb
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.dll
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.pdb
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.xml
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\bin\Debug\de\EntityFramework.SqlServer.resources.dll

@@ -16,6 +16,7 @@ namespace FlashCards11
     public partial class MainWindow : Window
     {
         //string connectionString = Connection.GetDBConnection().ToString();
+        SqlConnection sqlCon = ServerConnection.GetDBConnection();
         int labelCount;
         int countNextClicks;
         int questionsAskedCount;
@@ -25,6 +26,9 @@ namespace FlashCards11
 
         ICollectionView CollectionView;
         StudyAppEntities Context = new StudyAppEntities();
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
 
 
         public MainWindow()
@@ -93,7 +97,7 @@ namespace FlashCards11
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            LoadGraphic();
             DisplaySubject();
             subjectCB.Items.Add("Neues Fach");
             
@@ -105,7 +109,7 @@ namespace FlashCards11
             if (queryContentTB.Text.Length > 0 && contentTB.Text.Length > 0)
             {
                 //SqlConnection sqlCon = new SqlConnection(connectionString);
-                SqlConnection sqlCon = ServerConnection.GetDBConnection();
+            
                 String sql = "Insert into StudyAppItem (item_name, item_content, item_subject) values ('" + queryKeywordTB.Text + "','" + contentTB.Text + "', '" + subjectCB.Text + "')";
                 SqlCommand sqlCom = new SqlCommand(sql, sqlCon);
                 SqlDataAdapter adapter = new SqlDataAdapter();
@@ -347,8 +351,39 @@ namespace FlashCards11
         //            //Handle for the third combobox
         //            break;
         //    }
-                //}
-    
+        //}
+
+
         
-     }
+       private void LoadGraphic() { 
+            List<double> points = new List<double>();
+            //List<DateTime> date = new List<DateTime>();
+
+            sqlCon.Open();
+            SqlCommand cmd = new SqlCommand("Select SessionPPoints from SessionP", sqlCon);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                points.Add(Convert.ToDouble(dr["SessionPPoints"]));
+            }
+
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Values = new ChartValues<double>(points)
+                }
+            };
+
+
+
+            Labels = new[] { "A", "B", "C" }; 
+
+
+            DataContext = this;
+            sqlCon.Close();
+                
+        }
+    }
 }

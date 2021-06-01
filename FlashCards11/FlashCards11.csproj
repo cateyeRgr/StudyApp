@@ -92,12 +92,6 @@
     <Compile Include="StudyAppItem.cs">
       <DependentUpon>Model1StudyApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserControlStackedColumn.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControlStackedColumn.Designer.cs">
-      <DependentUpon>UserControlStackedColumn.cs</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
