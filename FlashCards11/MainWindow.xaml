@@ -142,7 +142,7 @@
                 </TabControl.Resources>
 
                 <!--Margin -1: hide horizontal line between tab and panel-->
-                <TabItem Header="Neue Flashcard" Opacity="1" Width="135" Margin="0,0,0,-1" >
+                <TabItem Header="Neue Flashcard" Opacity="1" Width="Auto" Margin="0,0,0,-1" >
                     <!--add round corners to grid/ add one highlighted corner-->
                     <!--<Border BorderBrush="#4488FF" BorderThickness="2" CornerRadius="00,30,00,00">-->
                     <Grid ShowGridLines="False" >
@@ -221,7 +221,7 @@
                     <!--</Border>-->
                 </TabItem>
 
-                <TabItem x:Name="queryTab" Header="Abfrage" Opacity="1" Width="135" Margin="0,0,0,-1">
+                <TabItem x:Name="queryTab" Header="Abfrage" Opacity="1" Width="Auto" Margin="0,0,0,-1">
                     <Grid ShowGridLines="False" >
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -309,7 +309,7 @@
                         <RadioButton x:Name="noRbtn" Content="n" Click="noRbtn_Click" Foreground="#4488FF" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20,10,50,10" Grid.Row="3" Grid.Column="1"></RadioButton>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Suche" Opacity="1" Width="135" Margin="0,0,0,-1" >
+                <TabItem Header="Suche" Opacity="1" Width="Auto" Margin="0,0,0,-1" >
                     <!--add round corners to grid/ add one highlighted corner-->
                     <!--<Border BorderBrush="#4488FF" BorderThickness="2" CornerRadius="00,30,00,00">-->
                     <Grid x:Name="ParentGrid" ShowGridLines="False" >
@@ -372,7 +372,7 @@
                     </Grid>
                 </TabItem>
                 <!---Chart-->
-                <TabItem x:Name="chartTab" Header="Charts" Opacity="1" Width="135" >
+                <TabItem x:Name="chartTab" Header="Charts" Opacity="1" Width="Auto" >
                     <UserControl>
                         <lvc:CartesianChart Series="{Binding SeriesCollection}">
                             <lvc:CartesianChart.AxisX>
