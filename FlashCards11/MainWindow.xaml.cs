@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System.Windows.Media.Effects;
+using System.Windows.Media;
 
 namespace FlashCards11
 {
@@ -23,6 +24,7 @@ namespace FlashCards11
         int questionsAskedCount;
         double correctAnswersCount;
         string contentLbl;
+        TextBox subjectTb;
         //private bool handle = true;
 
         ICollectionView CollectionView;
@@ -99,19 +101,34 @@ namespace FlashCards11
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadGraphic();
-            subjectCB.Items.Add("Neues Fach");
             DisplaySubject();
+            subjectCB.Items.Add("Neues Fach");
             
         }
 
         private async void saveBtn_Click(object sender, RoutedEventArgs e)
         {
-            //Test, if entry fields are not empty
-            if (queryContentTB.Text.Length > 0 && contentTB.Text.Length > 0)
+            //SqlConnection sqlCon = new SqlConnection(connectionString);            
+            //    //Test, if entry fields are not empty
+            //if (queryContentTB.Text.Length > 0 && contentTB.Text.Length > 0)
+            //{
+            if (String.IsNullOrEmpty(contentTB.Text) || String.IsNullOrEmpty(queryKeywordTB.Text))
             {
-                //SqlConnection sqlCon = new SqlConnection(connectionString);
-            
-                String sql = "Insert into StudyAppItem (item_name, item_content, item_subject) values ('" + queryKeywordTB.Text + "','" + contentTB.Text + "', '" + subjectCB.Text + "')";
+                confirmLbl.Content = "Bitte alle Felder ausfüllen.";
+            }
+
+            else { 
+                string sql = null;
+
+                if (subjectCB.IsVisible)
+                {
+                     sql = "Insert into StudyAppItem (item_name, item_content, item_subject) values ('" + queryKeywordTB.Text + "','" + contentTB.Text + "', '" + subjectCB.Text + "')";
+                }
+                else if (subjectTb.IsVisible)
+                {
+                    sql = "Insert into StudyAppItem (item_name, item_content, item_subject) values ('" + queryKeywordTB.Text + "','" + contentTB.Text + "', '" + subjectTb.Text + "')";
+                }
+
                 SqlCommand sqlCom = new SqlCommand(sql, sqlCon);
                 SqlDataAdapter adapter = new SqlDataAdapter();
                 String stichwortText = queryKeywordTB.Text;
@@ -133,15 +150,16 @@ namespace FlashCards11
                 sqlCom.Dispose();
                 sqlCon.Close();
                 ClearTB();
+                subjectTb.Clear();
                 confirmLbl.Content = "Daten wurden gespeichert";
                 await Task.Delay(3000);
                 confirmLbl.Content = "";
-
+      
             }
-            else
-            {
-                confirmLbl.Content = "Alle Felder ausfüllen.";
-            }
+            //else
+            //{
+            //    confirmLbl.Content = "Alle Felder ausfüllen.";
+            //}
         }
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)
@@ -385,8 +403,6 @@ namespace FlashCards11
                 dateStringList.Add(xDateString);
             }
             Labels = dateStringList.ToArray();
-
-
             DataContext = this;
             sqlCon.Close();
                 
@@ -400,18 +416,10 @@ namespace FlashCards11
             {
                 if (newCardTab.IsSelected)
                 {
-                    //SubjectCB_Selected();
-
                     //subscribe to DropDownClosed event to display textbox 
                     subjectCB.DropDownClosed += SubjectCB_DropDownClosed;
-                   
                 }
             }
-        }
-
-        private void SubjectCB_Selected()
-        {
-            
         }
 
         private void SubjectCB_DropDownClosed(object sender, EventArgs e)
@@ -419,20 +427,23 @@ namespace FlashCards11
             if (subjectCB.SelectedItem.ToString() == "Neues Fach")
             {
                 subjectCB.Visibility = Visibility.Hidden;
-                var textbox = new TextBox();
+                subjectTb = new TextBox();
                 //TextBox layout
                 DropShadowEffect myDropShadowEffect = new DropShadowEffect();
                 myDropShadowEffect.ShadowDepth = 2;
                 myDropShadowEffect.Direction = 330;
                 myDropShadowEffect.Opacity = 0.5;
                 myDropShadowEffect.BlurRadius = 5;
-                textbox.Margin = new Thickness(8);
-                textbox.Effect = myDropShadowEffect;
+                subjectTb.Margin = new Thickness(8);
+                subjectTb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4488FF"));
+                subjectTb.VerticalAlignment = VerticalAlignment.Center;
+                subjectTb.Effect = myDropShadowEffect;
 
                 //add new TextBox to Grid
-                newCardGrid.Children.Add(textbox);
-                Grid.SetRow(textbox, 0);
-                Grid.SetColumn(textbox, 1);
+                newCardGrid.Children.Add(subjectTb);
+                Grid.SetRow(subjectTb, 0);
+                Grid.SetColumn(subjectTb, 1);
+                Grid.SetColumnSpan(subjectTb, 2);
 
             }
         }

@@ -174,7 +174,7 @@
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </Label.Effect>
                         </Label>
-                        <ComboBox x:Name="subjectCB" SelectionChanged="SubjectCB_SelectionChanged" DropDownClosed="SubjectCB_DropDownClosed" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8" BorderBrush="{x:Null}">
+                        <ComboBox x:Name="subjectCB" SelectionChanged="SubjectCB_SelectionChanged" DropDownClosed="SubjectCB_DropDownClosed" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8"  >
                             <ComboBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
                             </ComboBox.Effect>
@@ -190,7 +190,7 @@
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </Label.Effect>
                         </Label>
-                        <TextBox x:Name="queryKeywordTB" Foreground="#4499FF"  Margin="8" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+                        <TextBox x:Name="queryKeywordTB" Foreground="#4499FF"  Margin="8" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
                             <TextBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="black" Opacity="0.5" BlurRadius="5"/>
                             </TextBox.Effect>
