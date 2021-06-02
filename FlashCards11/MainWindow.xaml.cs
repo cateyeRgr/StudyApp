@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Windows.Media.Effects;
 
 namespace FlashCards11
 {
@@ -27,6 +28,7 @@ namespace FlashCards11
         ICollectionView CollectionView;
         StudyAppEntities Context = new StudyAppEntities();
 
+        //live chart data properties
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
 
@@ -35,12 +37,10 @@ namespace FlashCards11
         {
             InitializeComponent();
             LoadGrid();
-            //InitiateSearchCB();
-          
             Context.StudyAppItem.Load();
+            //InitiateSearchCB();
             ICollectionView CollectionView = CollectionViewSource.GetDefaultView(Context.StudyAppItem.Local);
             ParentGrid.DataContext = CollectionView;
-            
 
             nextBtn.Content = "Start";
             confirmLblQuest.Content = "";
@@ -91,6 +91,7 @@ namespace FlashCards11
                     };
 
                     subjectCB.Items.Add(itmS);
+                    subjectCB.VerticalAlignment = VerticalAlignment.Center;
                 }
             }
         }
@@ -98,8 +99,8 @@ namespace FlashCards11
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadGraphic();
-            DisplaySubject();
             subjectCB.Items.Add("Neues Fach");
+            DisplaySubject();
             
         }
 
@@ -356,34 +357,84 @@ namespace FlashCards11
 
         
        private void LoadGraphic() { 
-            List<double> points = new List<double>();
-            //List<DateTime> date = new List<DateTime>();
+            List<double> pointsList = new List<double>();
+            List<DateTime> dateList = new List<DateTime>();
+            List<string> dateStringList = new List<string>();
 
             sqlCon.Open();
-            SqlCommand cmd = new SqlCommand("Select SessionPPoints from SessionP", sqlCon);
+            SqlCommand cmd = new SqlCommand("Select SessionPPoints, SessionPDate from SessionP", sqlCon);
             SqlDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
             {
-                points.Add(Convert.ToDouble(dr["SessionPPoints"]));
+                pointsList.Add(Convert.ToDouble(dr["SessionPPoints"]));
+                dateList.Add(Convert.ToDateTime(dr["SessionPDate"]));
             }
 
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
-                    Values = new ChartValues<double>(points)
+                    Values = new ChartValues<double>(pointsList)
                 }
             };
-
-
-
-            Labels = new[] { "A", "B", "C" }; 
+            foreach(var x in dateList)
+            {
+                var xSplitString = x.ToString().Split(' ');
+                var xDateString = xSplitString[0];
+                dateStringList.Add(xDateString);
+            }
+            Labels = dateStringList.ToArray();
 
 
             DataContext = this;
             sqlCon.Close();
                 
+        }
+
+
+
+        private void SubjectCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source is TabControl)
+            {
+                if (newCardTab.IsSelected)
+                {
+                    //SubjectCB_Selected();
+
+                    //subscribe to DropDownClosed event to display textbox 
+                    subjectCB.DropDownClosed += SubjectCB_DropDownClosed;
+                   
+                }
+            }
+        }
+
+        private void SubjectCB_Selected()
+        {
+            
+        }
+
+        private void SubjectCB_DropDownClosed(object sender, EventArgs e)
+        {
+            if (subjectCB.SelectedItem.ToString() == "Neues Fach")
+            {
+                subjectCB.Visibility = Visibility.Hidden;
+                var textbox = new TextBox();
+                //TextBox layout
+                DropShadowEffect myDropShadowEffect = new DropShadowEffect();
+                myDropShadowEffect.ShadowDepth = 2;
+                myDropShadowEffect.Direction = 330;
+                myDropShadowEffect.Opacity = 0.5;
+                myDropShadowEffect.BlurRadius = 5;
+                textbox.Margin = new Thickness(8);
+                textbox.Effect = myDropShadowEffect;
+
+                //add new TextBox to Grid
+                newCardGrid.Children.Add(textbox);
+                Grid.SetRow(textbox, 0);
+                Grid.SetColumn(textbox, 1);
+
+            }
         }
     }
 }

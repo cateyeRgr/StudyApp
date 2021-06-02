@@ -105,7 +105,7 @@
 
         <!--gridlayout which holds tabControl-->
         <Grid x:Name="LayoutRoot" >
-            <TabControl x:Name="tControl" Margin="10" VerticalAlignment="Stretch">
+            <TabControl x:Name="tControl"  Margin="10" VerticalAlignment="Stretch">
                 <!--tabControl style template-->
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
@@ -142,10 +142,10 @@
                 </TabControl.Resources>
 
                 <!--Margin -1: hide horizontal line between tab and panel-->
-                <TabItem Header="Neue Flashcard" Opacity="1" Width="Auto" Margin="0,0,0,-1" >
+                <TabItem x:Name="newCardTab" Header="Neue Flashcard" Opacity="1" Width="Auto" Margin="0,0,0,-1" Height="23" VerticalAlignment="Top" >
                     <!--add round corners to grid/ add one highlighted corner-->
                     <!--<Border BorderBrush="#4488FF" BorderThickness="2" CornerRadius="00,30,00,00">-->
-                    <Grid ShowGridLines="False" >
+                    <Grid x:Name="newCardGrid" ShowGridLines="False" >
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="#FFF" Offset="0.0" />
@@ -169,12 +169,12 @@
                         </Grid.RowDefinitions>
 
 
-                        <Label Content="Fach" FontSize="16" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                        <Label x:Name="subjectLb" Content="Fach" FontSize="16" Foreground="#4488FF"  Margin="2" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
                             <Label.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="5"/>
                             </Label.Effect>
                         </Label>
-                        <ComboBox x:Name="subjectCB" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8" BorderBrush="{x:Null}" >
+                        <ComboBox x:Name="subjectCB" SelectionChanged="SubjectCB_SelectionChanged" DropDownClosed="SubjectCB_DropDownClosed" FontSize="12" Foreground="#4488FF" Grid.Column="1" Margin="8" BorderBrush="{x:Null}">
                             <ComboBox.Effect>
                                 <DropShadowEffect ShadowDepth="2" Direction="330" Opacity="0.5" BlurRadius="5"/>
                             </ComboBox.Effect>
@@ -376,8 +376,11 @@
                     <UserControl>
                         <lvc:CartesianChart Series="{Binding SeriesCollection}">
                             <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Title="Date Time" Labels="{Binding Labels}"></lvc:Axis>
+                                <lvc:Axis Title="Datum" Labels="{Binding Labels}"></lvc:Axis>
                             </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Punkte" ></lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
                         </lvc:CartesianChart>
                     </UserControl>
                 </TabItem>
