@@ -73,24 +73,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model1StudyApp.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1StudyApp.Context.tt</DependentUpon>
+    <Compile Include="Item.cs">
+      <DependentUpon>ModelStudyApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model1StudyApp.cs">
+    <Compile Include="ModelStudyApp.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1StudyApp.tt</DependentUpon>
+      <DependentUpon>ModelStudyApp.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model1StudyApp.Designer.cs">
+    <Compile Include="ModelStudyApp.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1StudyApp.edmx</DependentUpon>
+      <DependentUpon>ModelStudyApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelStudyApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelStudyApp.edmx</DependentUpon>
     </Compile>
     <Compile Include="ServerConnection.cs" />
-    <Compile Include="StudyAppItem.cs">
-      <DependentUpon>Model1StudyApp.tt</DependentUpon>
+    <Compile Include="Session.cs">
+      <DependentUpon>ModelStudyApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Subject.cs">
+      <DependentUpon>ModelStudyApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>ModelStudyApp.tt</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -123,12 +132,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model1StudyApp.edmx">
+    <EntityDeploy Include="ModelStudyApp.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1StudyApp.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelStudyApp.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model1StudyApp.edmx.diagram">
-      <DependentUpon>Model1StudyApp.edmx</DependentUpon>
+    <None Include="ModelStudyApp.edmx.diagram">
+      <DependentUpon>ModelStudyApp.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -143,15 +152,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model1StudyApp.Context.tt">
+    <Content Include="ModelStudyApp.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1StudyApp.edmx</DependentUpon>
-      <LastGenOutput>Model1StudyApp.Context.cs</LastGenOutput>
+      <DependentUpon>ModelStudyApp.edmx</DependentUpon>
+      <LastGenOutput>ModelStudyApp.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model1StudyApp.tt">
+    <Content Include="ModelStudyApp.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1StudyApp.edmx</DependentUpon>
-      <LastGenOutput>Model1StudyApp.cs</LastGenOutput>
+      <DependentUpon>ModelStudyApp.edmx</DependentUpon>
+      <LastGenOutput>ModelStudyApp.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

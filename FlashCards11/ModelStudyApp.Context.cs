@@ -13,10 +13,10 @@ namespace FlashCards11
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class StudyAppEntities : DbContext
+    public partial class StudyAppEntities1 : DbContext
     {
-        public StudyAppEntities()
-            : base("name=StudyAppEntities")
+        public StudyAppEntities1()
+            : base("name=StudyAppEntities1")
         {
         }
     
@@ -25,6 +25,9 @@ namespace FlashCards11
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<StudyAppItem> StudyAppItem { get; set; }
+        public virtual DbSet<Item> Item { get; set; }
+        public virtual DbSet<Session> Session { get; set; }
+        public virtual DbSet<Subject> Subject { get; set; }
+        public virtual DbSet<User> User { get; set; }
     }
 }

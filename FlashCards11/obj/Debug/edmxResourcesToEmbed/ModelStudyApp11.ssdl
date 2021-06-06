@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudyAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Item_ID" />
+    </Key>
+    <Property Name="Item_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Item_Name" Type="varchar" MaxLength="100" />
+    <Property Name="Item_Content" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Subject_ID" Type="int" />
+  </EntityType>
+  <!--Während der Generierung sind Fehler aufgetreten:
+Warnung 6002: Für Tabelle/Sicht 'StudyApp.dbo.ItemSession' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.-->
+  <EntityType Name="ItemSession">
+    <Key>
+      <PropertyRef Name="Item_ID" />
+      <PropertyRef Name="Session_ID" />
+    </Key>
+    <Property Name="Item_ID" Type="int" Nullable="false" />
+    <Property Name="Session_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Session">
+    <Key>
+      <PropertyRef Name="Session_ID" />
+    </Key>
+    <Property Name="Session_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Session_Date" Type="datetime" Nullable="false" />
+    <Property Name="Session_Points" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="User_ID" Type="int" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Subject_Name" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="User_Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Hash" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Salt" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_item_subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_session_user">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Session" Type="Self.Session" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="User_ID" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="User_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="item_session">
+    <End Role="Session" Type="Self.Session" Multiplicity="1" />
+    <End Role="ItemSession" Type="Self.ItemSession" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Session">
+        <PropertyRef Name="Session_ID" />
+      </Principal>
+      <Dependent Role="ItemSession">
+        <PropertyRef Name="Session_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="item_subject">
+    <End Role="Item" Type="Self.Item" Multiplicity="1" />
+    <End Role="ItemSession" Type="Self.ItemSession" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Item_ID" />
+      </Principal>
+      <Dependent Role="ItemSession">
+        <PropertyRef Name="Item_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StudyAppModelStoreContainer">
+    <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ItemSession" EntityType="Self.ItemSession" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ItemSession].[Item_ID] AS [Item_ID], 
+    [ItemSession].[Session_ID] AS [Session_ID]
+    FROM [dbo].[ItemSession] AS [ItemSession]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="fk_item_subject" Association="Self.fk_item_subject">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="fk_session_user" Association="Self.fk_session_user">
+      <End Role="User" EntitySet="User" />
+      <End Role="Session" EntitySet="Session" />
+    </AssociationSet>
+    <AssociationSet Name="item_session" Association="Self.item_session">
+      <End Role="Session" EntitySet="Session" />
+      <End Role="ItemSession" EntitySet="ItemSession" />
+    </AssociationSet>
+    <AssociationSet Name="item_subject" Association="Self.item_subject">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="ItemSession" EntitySet="ItemSession" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

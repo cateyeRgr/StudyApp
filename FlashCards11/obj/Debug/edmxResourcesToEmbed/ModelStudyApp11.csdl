@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudyAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Item_ID" />
+    </Key>
+    <Property Name="Item_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Item_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Item_Content" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Subject_ID" Type="Int32" />
+    <NavigationProperty Name="Subject" Relationship="Self.fk_item_subject" FromRole="Item" ToRole="Subject" />
+    <NavigationProperty Name="Session" Relationship="Self.ItemSession" FromRole="Item" ToRole="Session" />
+  </EntityType>
+  <EntityType Name="Session">
+    <Key>
+      <PropertyRef Name="Session_ID" />
+    </Key>
+    <Property Name="Session_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Session_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Session_Points" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+    <Property Name="User_ID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.fk_session_user" FromRole="Session" ToRole="User" />
+    <NavigationProperty Name="Item" Relationship="Self.ItemSession" FromRole="Session" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Item" Relationship="Self.fk_item_subject" FromRole="Subject" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="User_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Hash" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Salt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Session" Relationship="Self.fk_session_user" FromRole="User" ToRole="Session" />
+  </EntityType>
+  <Association Name="fk_item_subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_session_user">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Session" Type="Self.Session" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="User_ID" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="User_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ItemSession">
+    <End Role="Session" Type="Self.Session" Multiplicity="*" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="StudyAppEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Item" EntityType="Self.Item" />
+    <EntitySet Name="Session" EntityType="Self.Session" />
+    <EntitySet Name="Subject" EntityType="Self.Subject" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="fk_item_subject" Association="Self.fk_item_subject">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="fk_session_user" Association="Self.fk_session_user">
+      <End Role="User" EntitySet="User" />
+      <End Role="Session" EntitySet="Session" />
+    </AssociationSet>
+    <AssociationSet Name="ItemSession" Association="Self.ItemSession">
+      <End Role="Session" EntitySet="Session" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
