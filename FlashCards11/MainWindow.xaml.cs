@@ -152,7 +152,7 @@ namespace FlashCards11
         }
 
 
-        private async void saveBtn_Click(object sender, RoutedEventArgs e) /////////////////////////////////////////////////////ändern!!!!!!!!!!!!!//////////////////////////////////////////////////7
+        private async void saveBtn_Click(object sender, RoutedEventArgs e) 
         {
             ////Test, if entry fields are empty
             //if (String.IsNullOrEmpty(contentTB.Text) || String.IsNullOrEmpty(queryKeywordTB.Text))
@@ -360,7 +360,7 @@ namespace FlashCards11
             return random.Next(min, max);
         }
 
-        public int getRowCount()////////////////////////////////////////////////////////////////geändert
+        public int getRowCount()
         {
             //SqlConnection sqlCon = new SqlConnection(connectionString);
             SqlConnection sqlCon = ServerConnection.GetDBConnection();
@@ -391,7 +391,7 @@ namespace FlashCards11
         /// populate QueryTab/ Abfrage
         /// </summary>
         /// <param name="count"></param>
-        public void populateQueryTab(int count)//Query #ndern!! -> prozente erst nach Stopp-Klick gestartet
+        public void populateQueryTab(int count)
         {
             //SqlConnection sqlCon = new SqlConnection(connectionString);
             SqlConnection sqlCon = ServerConnection.GetDBConnection();
@@ -544,11 +544,11 @@ namespace FlashCards11
             using (StudyAppEntities1 db = new StudyAppEntities1())
             {
                 Session s = new Session
-                    {
-                        Session_Date = System.DateTime.Now,
-                        Session_Points = setGetPercentage(),
-                        User_ID = userInt,
-                    };
+                {
+                    Session_Date = System.DateTime.Now,
+                    Session_Points = setGetPercentage(),
+                    User_ID = userInt,
+                };
 
                 db.Session.Add(s);
                 db.SaveChanges();
@@ -574,18 +574,6 @@ namespace FlashCards11
                 dateList.Add(Convert.ToDateTime(dr["Session_Date"]));
             }
 
-
-
-            //using (StudyAppEntities1 db = new StudyAppEntities1())
-            //{
-            //    var query = from s in db.Session
-            //                where s.User_ID == userInt
-            //                select s.Session_Points;
-            //    foreach (int q in query)
-            //    {
-            //        pointsList.Add(Convert.ToDouble(q));
-            //    }
-            //}
 
             SeriesCollection = new SeriesCollection
             {
@@ -873,15 +861,12 @@ namespace FlashCards11
         }
 
 
-
         private void RegisterBt_Click(object sender, RoutedEventArgs e)
         {
             if (passwordRePb.Visibility == Visibility.Hidden)
             {
                 LoginTabToRegisterTab();
-                //loginBt.Visibility = Visibility.Hidden;
-                //registerBt.Visibility = Visibility.Hidden;
-                //Main.Content = new Page1();
+               
             }
             else
             //register button becomes back button
@@ -950,33 +935,5 @@ namespace FlashCards11
                 dataGrid.ItemsSource = Context.Item.ToList();
             }
         }
-
-
-        //private void SearchTB_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        //{
-
-        //    StudyAppEntities1 Context = new StudyAppEntities1();
-
-        //    System.ComponentModel.ICollectionView CollectionView = CollectionViewSource.GetDefaultView(Context.Item.Local);
-        //    //ParentGrid.DataContext = CollectionView;
-        //    //string filter = searchTB.Text.ToLower();
-        //    //CollectionView.Filter = (x => ((Item)x).Item_Name.ToLower().Contains(filter));
-
-        //    var b = Context.Item.FirstOrDefault(x => x.Item_Name.Contains(searchTB.Text));
-        //    if (b != null)
-        //    {
-        //        CollectionView.MoveCurrentTo(b);
-        //    }
-        //}
-
-        //private void TControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (searchTab.IsSelected)
-        //    {
-        //        StudyAppEntities1 Context = new StudyAppEntities1();
-        //        searchGrid.ItemsSource = Context.Item.ToList();
-        //    }
-
-        //}
     }
 }
