@@ -11,43 +11,21 @@ namespace FlashCards11
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
-    public partial class User : INotifyPropertyChanged
-
+    
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
             this.Session = new HashSet<Session>();
         }
-
-      
-        public int _userID;
-     
-
-        //public int User_ID { get; set; }
-        public int User_ID
-        {
-            get { return _userID; }
-            set
-            {
-                _userID = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("User_ID"));
-            }
-        }
-
-        
+    
+        public int User_ID { get; set; }
         public string User_Name { get; set; }
         public string Hash { get; set; }
         public string Salt { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Session> Session { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-    
     }
 }

@@ -1,4 +1,4 @@
-﻿// Die T4-Codegenerierung ist für Modell 'C:\Users\KM\Source\Repos\FlashCards11\FlashCards11\ModelStudyApp.edmx' aktiviert. 
+﻿// Die T4-Codegenerierung ist für Modell 'C:\Users\KM\Source\Repos\StudyApp11\FlashCards11\ModelStudyApp.edmx' aktiviert. 
 // Um die Generierung von Legacycode zu aktivieren, ändern Sie den Wert der Designer-Eigenschaft 'Code Generation Strategy'
 // in 'Legacy ObjectContext'. Diese Eigenschaft wird im Eigenschaftenfenster angezeigt, wenn das Modell
 // im Designer geöffnet ist.

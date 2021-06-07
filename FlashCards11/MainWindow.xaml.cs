@@ -38,7 +38,9 @@ namespace FlashCards11
         string userString = null;
         private string saltString;
         private string hashString;
-        private bool exists = false;
+        private bool existsUser = false;
+        private bool existsSubject = false;
+
 
         TextBox subjectTb;
         private List<Subject> subjects { get; set; }
@@ -152,11 +154,11 @@ namespace FlashCards11
 
         private async void saveBtn_Click(object sender, RoutedEventArgs e) /////////////////////////////////////////////////////ändern!!!!!!!!!!!!!//////////////////////////////////////////////////7
         {
-            //Test, if entry fields are empty
-            if (String.IsNullOrEmpty(contentTB.Text) || String.IsNullOrEmpty(queryKeywordTB.Text))
-            {
-                confirmLbl.Content = "Bitte alle Felder ausfüllen";
-            }
+            ////Test, if entry fields are empty
+            //if (String.IsNullOrEmpty(contentTB.Text) || String.IsNullOrEmpty(queryKeywordTB.Text))
+            //{
+            //    confirmLbl.Content = "Bitte alle Felder ausfüllen";
+            //}
 
                   //else
                   //{
@@ -187,15 +189,19 @@ namespace FlashCards11
                   //            db.SaveChanges();
                   //        }
                   //    }
-            else
-                {
+            //else
+            //{
 
                     if (subjectCB.IsVisible)         
                     {
                         int subjectInt;
-                     
-                    try
+
+                  
+
+                        try
                         {
+
+
                             //new subject from textbox entries
                             //ToDo: use of @params to avoid sql-injection
                             using (StudyAppEntities1 db = new StudyAppEntities1())
@@ -222,22 +228,23 @@ namespace FlashCards11
                                 {
                                     Item_Name = queryKeywordTB.Text,
                                     Item_Content = contentTB.Text,
-                                    Subject_ID=subjectInt
+                                    Subject_ID = subjectInt
                                 };
 
                                 db.Item.Add(i3);
                                 db.SaveChanges();
                             }
-                             LoadSearchTab();
+                            LoadSearchTab();
 
                         }
                         catch (Exception)
                         {
                             confirmLblQuest.Visibility = Visibility.Visible;
                             confirmLblQuest.Content = "Datenbank nicht erreichbar";
-                        }
-
+                        }  
                     }
+
+                    
 
 
                     else if (subjectTb.IsVisible)
@@ -248,7 +255,7 @@ namespace FlashCards11
                               confirmLbl.Content = "Fach in Auswahl vorhanden";
 
                           }
-                         else { 
+                          else { 
                             try
                             {
                             using (StudyAppEntities1 db = new StudyAppEntities1())
@@ -313,15 +320,15 @@ namespace FlashCards11
                             //sqlCmd.ExecuteNonQuery();
                             //sqlCon.Close();
 
-                        }
-                    catch (Exception)
-                        {
-                            confirmLblQuest.Visibility = Visibility.Visible;
-                            confirmLblQuest.Content = "Datenbank nicht erreichbar";
-                        }
+                            }
+                                catch (Exception)
+                            {
+                                confirmLblQuest.Visibility = Visibility.Visible;
+                                confirmLblQuest.Content = "Datenbank nicht erreichbar";
+                            }
                     }
 
-                }
+                //}
 
 
             }
@@ -384,7 +391,7 @@ namespace FlashCards11
         /// populate QueryTab/ Abfrage
         /// </summary>
         /// <param name="count"></param>
-        public void populateQueryTab(int count)///////////////////////////////////////////////((((((((/////////////////////////////////////////////////////////////////////////////////Query #ndern!! -> prozente erst nach Stopp-Klick gestartet
+        public void populateQueryTab(int count)//Query #ndern!! -> prozente erst nach Stopp-Klick gestartet
         {
             //SqlConnection sqlCon = new SqlConnection(connectionString);
             SqlConnection sqlCon = ServerConnection.GetDBConnection();
@@ -393,7 +400,6 @@ namespace FlashCards11
             int randomInt = randomNumber(0, count);
             string randomIntString = randomInt.ToString();
 
-            //String sql = "Select item_subject, item_name, item_content from StudyAppItem where item_id =" + randomIntString;//old
             String sql = "Select Subject_Name, Item_Name, Item_Content from Item i join Subject s on i.Subject_ID = s.Subject_ID And i.Item_ID  =" + randomIntString;
             SqlCommand sqlCom = new SqlCommand(sql, sqlCon);
             sqlCon.Open();
@@ -403,8 +409,8 @@ namespace FlashCards11
             {
                 while (dr.Read())
                 {
-                    querySubjectLbl.Content = dr["Subject_Name"].ToString();///////////////////geändert
-                    queryKeywordLbl.Content = dr["Item_Name"].ToString();///////////////////geändert
+                    querySubjectLbl.Content = dr["Subject_Name"].ToString();
+                    queryKeywordLbl.Content = dr["Item_Name"].ToString();
                     //save content for later use when 'Lösung' is clicked
                     contentLbl = dr["Item_Content"].ToString();
                 }
@@ -464,8 +470,8 @@ namespace FlashCards11
         {
            
             correctAnswersCount++;
-            //radioButtonIsChecked();
-            setGetPercentage();
+            radioButtonIsChecked();
+            //setGetPercentage();
 
             yesRbtn.IsEnabled = false;
             noRbtn.IsEnabled = false;
@@ -475,8 +481,8 @@ namespace FlashCards11
 
         private void noRbtn_Click(object sender, RoutedEventArgs e)
         {
-            //radioButtonIsChecked();
-            setGetPercentage();
+            radioButtonIsChecked();
+            //setGetPercentage();
 
             yesRbtn.IsEnabled = false;
             noRbtn.IsEnabled = false;
@@ -519,38 +525,17 @@ namespace FlashCards11
 
 
         //calculate right answer percentage 
-        //old
-        //public void setPercentage()
-        //{
-        //    double correctPerc = (correctAnswersCount * 100) / questionsAskedCount;
-        //    pointsPercLbl.Content = string.Format("{0:0.00} %", correctPerc);
-        //}
-
-        ////if (questionsCountToSave >0 && questionsAskedCount>0)
-        ////{
-        //    correctPerc = Convert.ToDecimal((correctAnswersCount * 100) / questionsCountToSave);
-        //    pointsPercLbl.Content = string.Format("{0:0.00} %", correctPerc);
-        //    return correctPerc;
-        ////}
-        ////else
-        ////{
-        ////    return correctPerc = 0;
-        ////}
-        ///
-        public decimal setGetPercentage()///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////chart funkt, diese methode aber nicht -> s. letzte Version
+        public decimal setGetPercentage()
         {
             decimal correctPerc;
 
-            if (questionsCountToSave > 0 && questionsAskedCount > 0)
+            if (questionsAskedCount > 0)
             {
                 correctPerc = correctAnswersCount * 100.0m / questionsAskedCount;
                 pointsPercLbl.Content = string.Format("{0:0.00} %", correctPerc);
-            return correctPerc;
+                return correctPerc;
             }
-            else
-            {
-                return correctPerc = 0;
-            }
+            else return 0.00m;
 }
 
         //store changes in db
@@ -558,14 +543,6 @@ namespace FlashCards11
         {
             using (StudyAppEntities1 db = new StudyAppEntities1())
             {
-                //User user = db.User.FirstOrDefault(x => x.User_Name.Contains(userString));
-                //int userInt1 = user.User_ID;
-
-                //var query = from u in db.User
-                //    where u.User_Name == userString
-                //    select u.User_ID;
-                //foreach (int q in query)
-                //{
                 Session s = new Session
                     {
                         Session_Date = System.DateTime.Now,
@@ -573,7 +550,6 @@ namespace FlashCards11
                         User_ID = userInt,
                     };
 
-                //}
                 db.Session.Add(s);
                 db.SaveChanges();
             }
@@ -671,7 +647,7 @@ namespace FlashCards11
             }
         }
 
-        //Login-Tab logic/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+        //Login-Tab logic
         private void LoginBt_Click(object sender, RoutedEventArgs e)
         {
             //checking if login or registration required
@@ -709,7 +685,7 @@ namespace FlashCards11
                 //user must be unique -> checking for user
                 CheckExistingUser(TbUsername.Text);
                 bool equals = PasswordsCompare();
-                if (exists == false)
+                if (existsUser == false)
                 {
                     //create 8 byte salt
                     saltString = CreateSalt(8);
@@ -717,6 +693,7 @@ namespace FlashCards11
                     if (equals)
                     {
                         SaveLogin();
+                        SavePercentage();
                         PbPassword.Password = "";
                         passwordRePb.Password = "";
                         TbUsername.Clear();
@@ -741,9 +718,9 @@ namespace FlashCards11
             User u = ctx.User.FirstOrDefault(x => x.User_Name == userName);
             if (u != null)
             {
-                return exists = true;
+                return existsUser = true;
             }
-            return exists;
+            return existsUser=false;
         }
 
         private bool CheckExistingSubject(string subjectName)
@@ -752,9 +729,9 @@ namespace FlashCards11
             Subject s = ctx.Subject.FirstOrDefault(x => x.Subject_Name == subjectName);
             if (s != null)
             {
-                return exists = true;
+                return existsSubject = true;
             }
-            return exists;
+            return existsSubject =false;
         }
 
 
