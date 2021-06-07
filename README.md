@@ -1,2 +1,2 @@
 # StudyApp
-Flash card style eLearning software 
+Flash card style eLearning software (see master branch).
