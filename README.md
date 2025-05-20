@@ -7,4 +7,5 @@ Flash card style eLearning software (see master branch).
 ![LoginScreen](https://github.com/user-attachments/assets/97dc146b-6e4f-4c9c-b4ed-43f41203f868)
 ![EingabeComboBoxScreen](https://github.com/user-attachments/assets/faf49225-3351-4478-b053-3c4514a9df60)
 ![AbrageScreen](https://github.com/user-attachments/assets/39796ae0-918b-4239-82ce-d18869edaa29)
+![AbfrageLösung](https://github.com/user-attachments/assets/333004cf-697a-44b8-8e21-dfe8fc45246c)
 ![ChartScreen](https://github.com/user-attachments/assets/790de56a-b0d8-4604-b0e3-f949ad6a8be7)
