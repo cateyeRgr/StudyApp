@@ -1,5 +1,5 @@
 # StudyApp
-Flash card style eLearning software (see master branch).
+Flash card style eLearning software using C# and SQL (see master branch).
 
 ![UseCaseGen](https://github.com/user-attachments/assets/1412197b-1a43-4608-bc1b-7b353a4b5fa5)
 ![DBDesign](https://github.com/user-attachments/assets/ccbe6c84-0065-4ec2-aa98-ce9cdd6108eb)
